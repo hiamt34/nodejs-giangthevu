@@ -6,4 +6,6 @@ router.get('/', hotelController.index);
 
 router.get('/:id', hotelController.show);
 
+router.post('/search', hotelController.search);
+
 module.exports = router;

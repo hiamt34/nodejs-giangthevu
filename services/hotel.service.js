@@ -1,6 +1,6 @@
 const PatternService = require("./pattern.service");
-const { hotelModel } = require('../models')
-
+const { hotelModel } = require('../models');
+const removeVietnameseTones = require('../ultis/funcSuport') 
 class HotelService extends PatternService {
 
     constructor(model) {
@@ -8,26 +8,41 @@ class HotelService extends PatternService {
     };
 
     getAll = async (config, { location, rating, type }) => {
-        const count = await this.model.count({})
-        let payload = await this.model.find({}).limit(config.limit).skip(config.limit * (config.page - 1))
+        try {
+            const count = await this.model.count({})
+            let payload = await this.model.find({}).limit(config.limit).skip(config.limit * (config.page - 1))
 
-        if (location) {
-            payload = payload.filter( item => item.location == location)
-        }
-        if (rating) {
-            payload = payload.filter( item => item.rating >= Number(rating) )
-        }
-        if (type) {
-            payload = payload.filter( item => item.type == type)
-        }
-
-        return await {
-            data: payload,
-            meta: {
-                perPage: Number(config.limit),
-                total: count,
-                currentPage: Number(config.page),
+            if (location) {
+                payload = payload.filter(item => item.location == location)
             }
+            if (rating) {
+                payload = payload.filter(item => item.rating >= Number(rating))
+            }
+            if (type) {
+                payload = payload.filter(item => item.type == type)
+            }
+
+            return await {
+                data: payload,
+                meta: {
+                    perPage: Number(config.limit),
+                    total: count,
+                    currentPage: Number(config.page),
+                }
+            }
+        } catch (error) {
+            throw new Error(error);
+        }
+    };
+
+    search = async ({ search }) => {
+        try {
+
+            let hotels = await this.model.find({})
+            return hotels = await hotels.filter(hotel => removeVietnameseTones(hotel.name.trim()).includes(removeVietnameseTones(search.trim())))
+
+        } catch (error) {
+            throw new Error(error);
         }
     };
 }

@@ -26,7 +26,26 @@ class HotelComtroller extends PatternController {
         }
 
     };
-} 
+
+    search = async (req, res) => {
+        try {
+            const { search } = req.body
+            const filter = {
+                search
+            }
+            const data = await hotelService.search(filter)
+            return res.status(200).json({
+                mes: 'success',
+                data
+            })
+        } catch (error) {
+            return res.status(409).json({
+                mes: error.message
+            })
+        }
+
+    }
+}
 
 const hotelController = new HotelComtroller(hotelService)
 
