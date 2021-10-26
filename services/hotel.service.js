@@ -1,6 +1,6 @@
 const PatternService = require("./pattern.service");
 const { hotelModel } = require('../models');
-const removeVietnameseTones = require('../ultis/funcSuport') 
+const replaceTones = require('../ultis/funcSuport') 
 class HotelService extends PatternService {
 
     constructor(model) {
@@ -39,7 +39,16 @@ class HotelService extends PatternService {
         try {
 
             let hotels = await this.model.find({})
-            return hotels = await hotels.filter(hotel => removeVietnameseTones(hotel.name.trim()).includes(removeVietnameseTones(search.trim())))
+            return hotels = await hotels.filter(hotel => 
+                replaceTones(
+                    hotel.name.trim()
+                )
+                .toLowerCase()
+                .includes(
+                    replaceTones(search.trim())
+                    .toLowerCase()
+                )
+            )
 
         } catch (error) {
             throw new Error(error);
