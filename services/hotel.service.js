@@ -9,18 +9,32 @@ class HotelService extends PatternService {
 
     getAll = async (config, { location, rating, type }) => {
         try {
-            const count = await this.model.count({})
-            let payload = await this.model.find({}).limit(config.limit).skip(config.limit * (config.page - 1))
+            
+            let query = {}
 
             if (location) {
-                payload = payload.filter(item => item.location == location)
+                query = {
+                    ...query,
+                    location
+                }
             }
             if (rating) {
-                payload = payload.filter(item => item.rating >= Number(rating))
+                query = {
+                    ...query,
+                    rating: {
+                        $gte: Number(rating)
+                    }
+                }
             }
             if (type) {
-                payload = payload.filter(item => item.type == type)
+                query = {
+                    ...query,
+                    type
+                }
             }
+
+            const count = await this.model.find(query).count({})
+            let payload = await this.model.find(query).limit(config.limit).skip(config.limit * (config.page - 1))
 
             return await {
                 data: payload,

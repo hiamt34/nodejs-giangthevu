@@ -8,14 +8,16 @@ var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 var roomsRouter = require('./routes/rooms');
 var hotelsRouter = require('./routes/hotels');
+var paymentRouter = require('./routes/payment');
+
 const connect = require('./db/connect');
 connect()
 
 var app = express();
 
 // view engine setup
-// app.set('views', path.join(__dirname, 'views'));
-// app.set('view engine', 'ejs');
+app.set('views', path.join(__dirname, 'views'));
+app.set('view engine', 'ejs');
 app.use(cors())
 app.use(logger('dev'));
 app.use(express.json());
@@ -28,6 +30,8 @@ app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/rooms', roomsRouter);
 app.use('/hotels', hotelsRouter);
+app.use('/order', paymentRouter);
+
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
