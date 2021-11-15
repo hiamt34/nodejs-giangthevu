@@ -6,7 +6,7 @@ const paymentController = require('../controllers/payment.controller');
 const { paymentModel } = require('../models');
 
 router.get('/', paymentController.index);
-router.get('/:id', paymentController.show);
+router.get('/detail/:id', paymentController.show);
 
 router.get('/create_payment_url', function (req, res, next) {
     var dateFormat = require('dateformat');

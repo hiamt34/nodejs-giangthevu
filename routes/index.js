@@ -44,7 +44,7 @@ router.get('/', function (req, res, next) {
         },
         GET: {
           list: 'http://localhost:3000/order',
-          detail: 'http://localhost:3000/order/61670e983a0733ea003bed90',
+          detail: 'http://localhost:3000/order/detail/6190732c14dd5ecb5bfd2fe3',
           VN_PAY: 'http://localhost:3000/order/create_payment_url',
         }
       },
